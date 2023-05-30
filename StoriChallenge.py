@@ -13,8 +13,6 @@ from webdriver_manager.opera import OperaDriverManager
 args = argparse.ArgumentParser()
 args.add_argument('--browser', help='You can use Chrome, Firefox or Opera for the browser, ')
 args = args.parse_args()
-print(args.browser)
-
 
 match args.browser:
     case "Chrome":
@@ -24,7 +22,8 @@ match args.browser:
     case "Opera":
         driver = webdriver.Opera(executable_path=OperaDriverManager().install())
     case other:
-        raise ValueError
+        driver = webdriver.Chrome(ChromeDriverManager().install())
+        ##raise ValueError
 driver.maximize_window()
 
 # Open web Page
@@ -53,7 +52,7 @@ except:
 
 time.sleep(2)
 
-# Select option 2
+# Select option 3
 try:
     print('Scenario 3: Select Option 3')
     x = driver.find_element(By.XPATH, "//select[@id='dropdown-class-example']")
@@ -140,7 +139,8 @@ except Exception as error:
 try:
     print('Scenario 8: Find in table fixed')
     for row in driver.find_elements(By.CSS_SELECTOR, "body > div:nth-child(5) > div:nth-child(2) > fieldset:nth-child(2) > div:nth-child(2) > table:nth-child(1) > tbody:nth-child(2) > tr"):
-        print("\t\tThe name is :", row.find_element(By.CSS_SELECTOR, "td:nth-child(1)").text)
+        if "Engineer" not in row.text:
+            print("\t\tThe name is :", row.find_element(By.CSS_SELECTOR, "td:nth-child(1)").text)
         
     print("\tResult [",datetime.datetime.now().time(),"]: Success")
         #print(row.find_element(By.CSS_SELECTOR, "td:nth-child(3)").text) 
